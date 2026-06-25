@@ -16,8 +16,25 @@
             
             <button>proceed</button>
             
+            
         </form>
-        <p>yourlink:{{ repo }}</p>
+        <p>yourlink:{{ repo }}</p> <!--print s value of repo-->
+        {% if found %}
+<form action="/deploy" method="POST">
+
+    <input
+        type="hidden"
+        name="repo"
+        value="{{ repo }}"> <!--hidden input which is the users link itself-->
+
+    <button type="submit">
+        clone Repo
+    </button>
+
+</form>
+{% endif %}
+
+        
         <p></p><!--print s value of repo-->
     </body>
 </html>

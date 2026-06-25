@@ -1,5 +1,6 @@
-from flask import Flask,render_template,request,jsonify
+from flask import Flask,render_template,request
 import requests
+import subprocess #let program execute terminal commands
 
 app =Flask(__name__)
 
@@ -28,11 +29,11 @@ def home():
         api_url = f"https://api.github.com/repos/{parts[3]}/{parts[4]}"
         response = requests.get(api_url)
         if  response.status_code == 200:
-             return render_template("index.html", repo="Repository found")
+             return render_template("index.html", repo=repo,message="Repository found",found=True)
         
             
         else:
-            return render_template("index.html", repo="Repository not found")
+            return render_template("index.html", repo=repo,message="Repository not found",found=False)
             
 
       
