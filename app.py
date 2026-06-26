@@ -49,6 +49,7 @@ def clone():
     repo=request.form["repo"]
     parts= repo.rstrip("/").split("/")
     destination= f"repos/{parts[4]}"
+
     os.makedirs("repos", exist_ok=True)
     result = subprocess.run(
         ["git","clone",repo,destination],
@@ -56,9 +57,63 @@ def clone():
         text=True
     )
     if result.returncode==0:
-        return render_template( "index.html",clonestatus="Cloned successfully")
+        project = checktypeofwork(destination)
+        details=projectdetails(get_repo_info(repo))
+        dependencystatus=installdependencies(project,destination)
+        return render_template( "index.html",clonestatus="Cloned successfully",projecttype=project,name=details[0],language=details[1],stars=details[2],description=details[3],dependencystatus=dependencystatus)
     else:
         return  render_template( "index.html",clonestatus= f"something went wrong {result.stderr}")
+    
+def checktypeofwork(destination):
+        
+        files=os.listdir(destination)
+        
+        if  "requirements.txt" in files:
+            return "python"
+        if "package.json" in files:
+            return "nodejs"
+        if "pom.xml" in files:
+            return "java"
+        else:
+            return "unknown"  
+def get_repo_info(repo): #helper function to get repo info
+    parts =repo.rstrip("/").split("/")
+    api_url = f"https://api.github.com/repos/{parts[3]}/{parts[4]}"
+
+    response = requests.get(api_url)
+
+    data = response.json()
+    return data
+    
+def projectdetails(data):
+    name = data["name"]
+    language = data["language"]
+    stars = data["stargazers_count"]
+    description = data["description"]
+    return(name,language,stars,description)
+
+def installdependencies(projecttype,destination):
+    if projecttype=="python":
+        result=subprocess.run(["pip","install","-r","requirements.txt"],cwd=destination,capture_output=True,text=True)
+    elif projecttype=="nodejs":
+        result=subprocess.run(["npm","install"],cwd=destination,capture_output=True,text=True)
+    elif projecttype=="java":
+        result=subprocess.run(["mvn","install"],cwd=destination,capture_output=True,text=True)
+    else:
+        return("unknown project type")
+    if result.returncode==0:
+        return "Dependencies installed successfully"
+    else:
+        return f"something went wrong {result.stderr}"
+
+    
+
+
+     
+           
+                                                                                                                           
+
+
     
     
 

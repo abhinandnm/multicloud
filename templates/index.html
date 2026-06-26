@@ -18,8 +18,17 @@
             
             
         </form>
+        
+
         <p>{{clonestatus}}</p>
-        <p>{{ repo }}</p> <!--print s value of repo-->
+        <p>project type: {{ projecttype}}</p>
+        <p>Repository Name: {{ name }}</p>
+        <p>Language: {{ language }}</p>
+        <p>Stars: {{ stars }}</p>
+        <p>Description: {{ description }}</p>
+        <p>Repository URL: {{ repo }}</p> <!--print s value of repo-->
+        <p>Dependency Installation Status: {{ dependencystatus }}</p>
+       
         {% if found %}
 <form action="/deploy" method="POST">
 
