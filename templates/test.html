@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin-bottom: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Interactive Floating Labels Container */
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            font-size: 16px;
+            background: none;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Changes border color when user clicks/types */
+        .input-group input:focus,
+        .input-group input:valid {
+            border-color: #667eea;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            padding: 0 4px;
+        }
+
+        /* Slides label up and shrinks text when interactive */
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: 0;
+            font-size: 12px;
+            color: #667eea;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: #5566d8;
+        }
+
+        /* Error Message Alert Styles */
+        .flash-messages {
+            background: #ffe3e3;
+            color: #e53e3e;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #fbd38d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Account Login</h2>
+
+    <!-- Dynamic Error Handling from Flask -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-messages">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="/" method="POST" onsubmit="showLoadingState()">
+        <div class="input-group">
+            <!-- required attribute ensures the :valid CSS state works -->
+            <input type="text" id="username" name="username" required autocomplete="off">
+            <label for="username">Username or Email</label>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" id="password" name="password" required>
+            <label for="password">Password</label>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">Sign In</button>
+    </form>
+</div>
+
+<script>
+    // Front-end interactive state on button click
+    function showLoadingState() {
+        const btn = document.getElementById('submitBtn');
+        btn.innerHTML = 'Connecting...';
+        btn.style.opacity = '0.7';
+        btn.style.pointerEvents = 'none';
+    }
+</script>
+
+</body>
+</html>

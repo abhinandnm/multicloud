@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            GitHub Repository 
+        </title>
+
+    </head>
+    <body>
+        <h1>Github Repository URL</h1>
+        <form method="POST">
+            <label>Repo url</label><br>
+            <input type="text" name="repodata">
+            <br>
+            <br>
+            
+            <button>proceed</button>
+            
+            
+        </form>
+        <p>{{clonestatus}}</p>
+        <p>{{ repo }}</p> <!--print s value of repo-->
+        {% if found %}
+<form action="/deploy" method="POST">
+
+    <input
+        type="hidden"
+        name="repo"
+        value="{{ repo }}"> <!--hidden input which is the users link itself-->
+
+    <button type="submit">
+        clone Repo
+    </button>
+    
+
+</form>
+{% endif %}
+
+        
+        <p></p><!--print s value of repo-->
+    </body>
+</html>
