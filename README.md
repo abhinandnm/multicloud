@@ -27,7 +27,6 @@ A personal project to build a multi-cloud deployment platform from scratch using
  This project is currently under active development. Features may change frequently and the application is not yet production-ready.
 
 ## Tech Stack
-
 - Python
 - Flask
 - Git
