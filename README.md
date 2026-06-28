@@ -3,7 +3,6 @@
 A personal project to build a multi-cloud deployment platform from scratch using Python and Flask.
 
 ## Current Features
-
 - Validate GitHub repository URLs
 - Verify repository existence using the GitHub API
 - Clone public GitHub repositories
