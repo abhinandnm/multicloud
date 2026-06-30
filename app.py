@@ -60,7 +60,22 @@ def clone():
         project = checktypeofwork(destination)
         details=projectdetails(get_repo_info(repo))
         dependencystatus=installdependencies(project,destination)
-        return render_template( "index.html",clonestatus="Cloned successfully",projecttype=project,name=details[0],language=details[1],stars=details[2],description=details[3],dependencystatus=dependencystatus)
+        # serverstatus=startproject(project,destination)
+        if dependencystatus=="Dependencies installed successfully":
+            serverstatus=startproject(project,destination)
+        else:
+            serverstatus="Dependencies not installed, so server not started"
+        
+        return render_template( "index.html",
+                               clonestatus="Cloned successfully",
+                               projecttype=project,
+                               name=details[0],
+                               language=details[1],
+                               stars=details[2],
+                               description=details[3],
+                               dependencystatus=dependencystatus,
+                               serverstatus=serverstatus)
+    
     else:
         return  render_template( "index.html",clonestatus= f"something went wrong {result.stderr}")
     
@@ -106,7 +121,37 @@ def installdependencies(projecttype,destination):
     else:
         return f"something went wrong {result.stderr}"
 
+def pythonproject(destination):
     
+    files=os.listdir(destination)
+    if "app.py" in files:
+        subprocess.Popen(["python","app.py"],cwd=destination)
+        return "Server started successfully"
+    elif "main.py" in files:
+        subprocess.Popen(["python","main.py"],cwd=destination)
+        return "Server started successfully"
+    elif "manage.py" in files:
+        subprocess.Popen(["python","manage.py"],cwd=destination)
+        return "Server started successfully"
+    else:
+        return "no entry point found"
+
+# def nodejsproject(destination):
+
+
+def startproject(projecttype,destination):
+
+    if projecttype=="python":
+       return pythonproject(destination)
+    else:
+        return "unknown project type"
+        
+
+
+
+        
+
+
 
 
      
@@ -124,4 +169,4 @@ def installdependencies(projecttype,destination):
 
     
     
-app.run()
+app.run(debug=True,use_reloader=False)

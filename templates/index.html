@@ -28,7 +28,7 @@
         <p>Description: {{ description }}</p>
         <p>Repository URL: {{ repo }}</p> <!--print s value of repo-->
         <p>Dependency Installation Status: {{ dependencystatus }}</p>
-       
+        <p>Server Status: {{ serverstatus }}</p>
         {% if found %}
 <form action="/deploy" method="POST">
 
@@ -44,6 +44,7 @@
 
 </form>
 {% endif %}
+
 
         
         <p></p><!--print s value of repo-->
