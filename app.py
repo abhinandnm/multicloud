@@ -49,6 +49,8 @@ def clone():
     repo=request.form["repo"]
     parts= repo.rstrip("/").split("/")
     destination= f"repos/{parts[4]}"
+    if os.path.exists(destination):
+        return loadprojecthelper(destination,repo,clonestatus="Repository already exists, using existing copy")
 
     os.makedirs("repos", exist_ok=True)
     result = subprocess.run(
@@ -146,27 +148,25 @@ def startproject(projecttype,destination):
     else:
         return "unknown project type"
         
-
-
-
+def loadprojecthelper(destination,repo,clonestatus):#helper function to load project if repo already exsist
+    print("running helper function cause repo already exsist")
+    project=checktypeofwork(destination)
+    details=projectdetails(get_repo_info(repo))
+    dependencystatus=installdependencies(project,destination)
+    if dependencystatus=="Dependencies installed successfully":
+            serverstatus=startproject(project,destination)
+    else:
+        serverstatus="Dependencies not installed, so server not started"
         
-
-
-
-
-     
-           
-                                                                                                                           
-
-
+    return render_template( "index.html",
+                           clonestatus=clonestatus,
+                            projecttype=project,
+                            name=details[0],
+                            language=details[1],
+                            stars=details[2],
+                            description=details[3],
+                            dependencystatus=dependencystatus,
+                            serverstatus=serverstatus)
     
-    
-
-
-
-
-
-
-    
-    
+  #incomplete need to fix stuff near clone function
 app.run(debug=True,use_reloader=False)
