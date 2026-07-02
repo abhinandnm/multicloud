@@ -1,7 +1,7 @@
-from flask import Flask,render_template,request
-import requests
+from flask import Flask,render_template,request#this request just recives data to backend from frontend
+import requests # EXTERNSL PYTHON LIBRSRY WE USE IT TO CALL API and stuffs
 import subprocess #let program execute terminal commands
-import os
+import os#lets theprogram interact with the operating system, such as files, folders, and environment variables
 app =Flask(__name__)
 
 
@@ -50,7 +50,7 @@ def clone():
     parts= repo.rstrip("/").split("/")
     destination= f"repos/{parts[4]}"
     if os.path.exists(destination):
-        return loadprojecthelper(destination,repo,clonestatus="Repository already exists, using existing copy")
+        return loadprojecthelper(destination,repo,clonestatus="Repository already exists, using existing copy")#calling helper function
 
     os.makedirs("repos", exist_ok=True)
     result = subprocess.run(
@@ -169,4 +169,5 @@ def loadprojecthelper(destination,repo,clonestatus):#helper function to load pro
                             serverstatus=serverstatus)
     
   #incomplete need to fix stuff near clone function
+
 app.run(debug=True,use_reloader=False)
